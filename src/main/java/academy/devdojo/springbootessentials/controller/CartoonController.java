@@ -41,6 +41,7 @@ public class CartoonController {
         return ResponseEntity.ok(cartoonService.listAll(pegeable));
     }
 
+
     @GetMapping(path = "/all")
     public ResponseEntity<List<Cartoon>> listAll() {
         return ResponseEntity.ok(cartoonService.listAllNonPageable());

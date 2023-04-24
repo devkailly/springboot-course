@@ -2,11 +2,14 @@
 package academy.devdojo.springbootessentials.config;
 
 import academy.devdojo.springbootessentials.service.DevDojoUserDetailsService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -38,22 +41,54 @@ public class SecurityConfig {
      * FilterSecurityInterceptor
      * Dois processos na parte de segurança
      * Authentication -> Authorization
+     *
      * @param http
      * @return
      * @throws Exception
      */
 
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests(
+//                        authCofig -> authCofig.anyRequest().permitAll()
+//                )
+//
+//                .csrf().disable()
+//                .formLogin(Customizer.withDefaults());
+//        return http.build();
+//    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
-                authCofig -> authCofig.anyRequest().permitAll()
-                )
-
-                .csrf().disable()
-                .formLogin(Customizer.withDefaults());
+        http.csrf().disable()
+                .authorizeHttpRequests()
+                .requestMatchers("/cartoons/admin/**").permitAll()
+                .requestMatchers("/cartoons/**").permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .and()
+                .httpBasic(Customizer.withDefaults())
+                .authenticationProvider(authenticationProvider());
         return http.build();
     }
-//
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(devDojoUserDetailsService);
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        daoAuthenticationProvider.setPasswordEncoder(encoder);
+        return daoAuthenticationProvider;
+    }
+
+
+
+
+
+
+
 //    @Bean
 //    public InMemoryUserDetailsManager userDetailsService() {
 //        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -66,7 +101,7 @@ public class SecurityConfig {
 //    }
 
 //    @Bean
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//    SecurityFilterChain configure(AuthenticationManagerBuilder auth) throws Exception {
 //        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //        log.info("Password Encoded {} ", passwordEncoder.encode("academy"));
 //
