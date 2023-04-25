@@ -1,0 +1,14 @@
+//Criando imagem docker baseando-se no Dockerfile
+docker build -t kaillyarruda/springbootessentials .
+
+//Rodando imagem docker
+docker run --rm -p 8080:8080 kaillyarruda/springbootessentials
+
+//Fazendo login no docker-hub
+docker login -u kaillyarruda -p 1705niver
+
+//Criando tag
+docker tag springbootessentials kaillyarruda/springbootessentials:latest
+
+//Fazendo push para o docker-hub
+docker push kaillyarruda/springbootessentials

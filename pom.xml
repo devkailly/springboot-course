@@ -138,6 +138,7 @@
 <!--							</container>-->
 <!--						</configuration>-->
 <!--					</plugin>-->
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
@@ -154,6 +155,7 @@
 		</profile>
 	</profiles>
 	<build>
+		<finalName>springbootessentials</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -184,4 +186,3 @@
 	</build>
 
 </project>
-11:59
