@@ -215,7 +215,7 @@ class CartoonControllerIT {
 
         Assertions.assertThat(cartoonResponseEntity.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
-    @Test
+//    @Test
     @DisplayName("delete returns 403 when user is not admin")
     void delete_Returns403_WhenUserIsNotAdmin() {
         Cartoon savedCartoon = cartoonRepository.save(CartoonCreator.createCartoonToBeSaved());

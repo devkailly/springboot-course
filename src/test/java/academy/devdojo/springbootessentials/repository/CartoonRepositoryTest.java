@@ -99,7 +99,7 @@ class CartoonRepositoryTest {
 //        Assertions.assertThatThrownBy(() -> this.cartoonRepository.save(cartoon))
 //                .isInstanceOf(ConstraintViolationException.class);
 
-        Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
+        Assertions.assertThatExceptionOfType(jakarta.validation.ConstraintViolationException.class)
                 .isThrownBy(() -> this.cartoonRepository.save(cartoon))
                 .withMessageContaining("The cartoon name cannot be empty");
     }

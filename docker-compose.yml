@@ -2,13 +2,15 @@ version: '3.7'
 services:
   db:
     image: mysql
-    container_name: mysql
+    container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
     - "3306:3306"
     volumes:
       - devdojo_data:/var/lib/mysql
+    networks:
+      - login-network
 
   prometheus:
     image: prom/prometheus:latest
@@ -27,6 +29,19 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    networks:
+      - login-network
+
+  app:
+    image: kaillyarruda/springboot2-essentials:latest
+    container_name: app
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/anime?createDatabaseIfNotExist=true
     networks:
       - login-network
 
