@@ -5,9 +5,13 @@ import academy.devdojo.springbootessentials.requests.CartoonPostRequestBody;
 import academy.devdojo.springbootessentials.requests.CartoonPutRequestBody;
 import academy.devdojo.springbootessentials.service.CartoonService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,17 +31,15 @@ import java.util.List;
 public class CartoonController {
     private final CartoonService cartoonService;
 
-//    @GetMapping
-//    @Operation(summary = "List all cartoons paginated", description = "The default size is 20, use the parameter size to change the default value",
-//    tags = )
-
 //    @GetMapping("/oi")
 //    public String list() {
 //        return "oi";
 //    }
 
     @GetMapping
-    public ResponseEntity<Page<Cartoon>> list(Pageable pegeable) {
+    @Operation(summary = "List all cartoons paginated", description = "The default size is 20, use the parameter size to change the default value",
+            tags = {"cartoon"})
+    public ResponseEntity<Page<Cartoon>> list(@ParameterObject Pageable pegeable) {
         return ResponseEntity.ok(cartoonService.listAll(pegeable));
     }
 
@@ -71,6 +73,10 @@ public class CartoonController {
     }
 
     @DeleteMapping(path = "/admin/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successful Operation"),
+            @ApiResponse(responseCode = "400", description = "When Anime Does Not Exist in The Database"),
+    })
     public ResponseEntity<Void> delete(@PathVariable long id) {
         cartoonService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

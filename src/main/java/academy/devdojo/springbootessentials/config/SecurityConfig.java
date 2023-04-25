@@ -2,7 +2,6 @@
 package academy.devdojo.springbootessentials.config;
 
 import academy.devdojo.springbootessentials.service.DevDojoUserDetailsService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -64,6 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/cartoons/admin/**").permitAll()
                 .requestMatchers("/cartoons/**").permitAll()
+                .requestMatchers("/actuator/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -83,40 +83,5 @@ public class SecurityConfig {
         return daoAuthenticationProvider;
     }
 
-
-
-
-
-
-
-//    @Bean
-//    public InMemoryUserDetailsManager userDetailsService() {
-//        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        UserDetails user = User.withUsername("devdojo")
-//                .password(encoder.encode("bald"))
-//                .roles("USER" , "ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user);
-//
-//    }
-
-//    @Bean
-//    SecurityFilterChain configure(AuthenticationManagerBuilder auth) throws Exception {
-//        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        log.info("Password Encoded {} ", passwordEncoder.encode("academy"));
-//
-//        auth.inMemoryAuthentication()
-//                .withUser("william")
-//                .password(passwordEncoder.encode("academy"))
-//                .roles("USER", "ADMIN")
-//                .and()
-//                .withUser("devdojo2")
-//                .password(passwordEncoder.encode("academy"))
-//                .roles("USER");
-//
-//        auth.userDetailsService(devDojoUserDetailsService)
-//                .passwordEncoder(passwordEncoder);
-//    }
-
-}
+    }
 

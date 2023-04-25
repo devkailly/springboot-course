@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 services:
   db:
     image: mysql
@@ -10,5 +10,30 @@ services:
     volumes:
       - devdojo_data:/var/lib/mysql
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - "./src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+    networks:
+      - login-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - login-network
+
 volumes:
   devdojo_data:
+
+networks:
+  login-network:
+    driver: bridge
+    name: login-network

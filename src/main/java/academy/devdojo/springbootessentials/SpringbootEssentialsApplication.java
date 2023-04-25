@@ -1,7 +1,11 @@
 package academy.devdojo.springbootessentials;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.metrics.MeterRegistryCustomizer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,6 +22,11 @@ public class SpringbootEssentialsApplication {
 
 
         SpringApplication.run(SpringbootEssentialsApplication.class, args);
-    }
 
-}
+        }
+    @Bean
+    MeterRegistryCustomizer<MeterRegistry> configurer(
+            @Value("${spring.application.name}") String applicationName) {
+        return (registry) -> registry.config().commonTags("application", applicationName);
+    }
+    }

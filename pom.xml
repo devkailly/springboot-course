@@ -17,12 +17,38 @@
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <kotlin.version>1.8.20</kotlin.version>
-    </properties>
+		<springdoc-openapi-starter-webmvc-ui.version>2.1.0</springdoc-openapi-starter-webmvc-ui.version>
+		<springdoc-openapi-data-rest.version>1.7.0</springdoc-openapi-data-rest.version>
+		<jib-maven-plugin.version>3.3.1</jib-maven-plugin.version>
+		<docker.distroless.image>ger.io/distroless/java:11</docker.distroless.image>
+		<docker.repo.url>registry.hub.docker.com/kaillyarruda</docker.repo.url>
+		<docker.repo.project>springboot2-essentials</docker.repo.project>
+		<docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
+	</properties>
+
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.1.0</version>
+			<version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>${springdoc-openapi-data-rest.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-security</artifactId>
+			<version>${springdoc-openapi-data-rest.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -82,12 +108,36 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>6.0.2</version>
+        </dependency>
+    </dependencies>
 	<profiles>
 		<profile>
 			<id>integration-tests</id>
 			<build>
 				<plugins>
+<!--					<plugin>-->
+<!--						<groupId>com.google.cloud.tools</groupId>-->
+<!--						<artifactId>jib-maven-plugin</artifactId>-->
+<!--						<version>3.3.1</version>-->
+<!--						<configuration>-->
+<!--							<from>-->
+<!--								<image>${docker.distroless.image}</image>-->
+<!--							</from>-->
+<!--							<to>-->
+<!--								<image>${docker.image.name}</image>-->
+<!--								<tags>-->
+<!--									<tag>${project.version}</tag>-->
+<!--								</tags>-->
+<!--							</to>-->
+<!--							<container>-->
+<!--								<mainclass>academy.devdojo.springbootessentials.SpringbootEssentialsApplication</mainclass>-->
+<!--							</container>-->
+<!--						</configuration>-->
+<!--					</plugin>-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
@@ -134,3 +184,4 @@
 	</build>
 
 </project>
+11:59
